@@ -26,6 +26,11 @@ public class ProductService {
 }
 
     public List<ProductResponse> findAll(){
+        try {
+            Thread.sleep(5000);
+        }catch(InterruptedException e){
+            throw new RuntimeException(e);
+        }
         List<Product> productList=productRepository.findAll();
         log.info("Product fetched successfully..");
         return productList.stream().map(product-> new ProductResponse(product.getName(),product.getDescription(),product.getPrice())).toList();

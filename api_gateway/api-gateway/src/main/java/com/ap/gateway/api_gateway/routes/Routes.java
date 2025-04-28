@@ -19,6 +19,8 @@ public class Routes {
     public RouterFunction<ServerResponse> productServiceRoutes(){
         return GatewayRouterFunctions.route("product_service")
                 .route(RequestPredicates.path("/api/product"), HandlerFunctions.http("http://localhost:8080"))
+                .filter(CircuitBreakerFilterFunctions.circuitBreaker("productServiceCircuitBreaker",
+                        URI.create("forward:/fallbackRoute")))
                 .build();
     }
 
@@ -26,6 +28,8 @@ public class Routes {
     public RouterFunction<ServerResponse> orderServiceRoutes(){
         return GatewayRouterFunctions.route("order_service")
                 .route(RequestPredicates.path("/api/order"), HandlerFunctions.http("http://localhost:8081"))
+                .filter(CircuitBreakerFilterFunctions.circuitBreaker("productServiceCircuitBreaker",
+                        URI.create("forward:/fallbackRoute")))
                 .build();
     }
 
@@ -33,6 +37,8 @@ public class Routes {
     public RouterFunction<ServerResponse> inventoryServiceRoutes(){
         return GatewayRouterFunctions.route("inventory_service")
                 .route(RequestPredicates.path("/api/inventory"), HandlerFunctions.http("http://localhost:8082"))
+                .filter(CircuitBreakerFilterFunctions.circuitBreaker("productServiceCircuitBreaker",
+                        URI.create("forward:/fallbackRoute")))
                 .build();
     }
 
